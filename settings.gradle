@@ -1,0 +1,4 @@
+include ':helper_app'
+include ':tv_app'
+include ':remote_control_app'
+rootProject.name = "Old TV"
