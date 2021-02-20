@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -27,5 +29,15 @@ public class MainActivity extends AppCompatActivity {
         // 设置全屏播放, 不能取消标题栏和状态栏
 //        plVideoview.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
         plVideoview.start();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.e("1", ""+keyCode);
+        // keycode      action
+        // 24           volume+
+        // 25           volume-
+        // 19,20,21,22  up,down,left,right
+        return super.onKeyDown(keyCode, event);
     }
 }
