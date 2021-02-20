@@ -17,9 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/Theme.OldTV.Fullscreen"
-        >
-
+        android:theme="@style/Theme.OldTV.Fullscreen">
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
