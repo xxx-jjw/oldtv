@@ -1,70 +1,57 @@
 package top.xxx.helper_app;
 
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnCompletionListener;
+
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-public class LiveUriTestActivity extends AppCompatActivity implements
-        OnBufferingUpdateListener, OnCompletionListener,
-        MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
+import com.pili.pldroid.player.widget.PLVideoView;
 
-    private MediaPlayer mediaPlayer;
 
-    private SurfaceView surfaceView;
+public class LiveUriTestActivity extends AppCompatActivity {
 
-    private SurfaceHolder surfaceHolder;
-
-    private int videoWidth;
-
-    private int videoHeight;
+    private PLVideoView plVideoview;
+    private EditText uriText;
+    private Button uriTestBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_uri_test);
 
-        this.surfaceView = (SurfaceView) this.findViewById(R.id.surface);
-        this.surfaceHolder = this.surfaceView.getHolder();
-        this.surfaceHolder.addCallback(this);
-        this.surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        Log.v("mplayer", ">>>create ok.");
+        uriText = findViewById(R.id.liveUri);
+        uriTestBtn = findViewById(R.id.liveUriTestBtn);
+        plVideoview = (PLVideoView) findViewById(R.id.uriTestVideoView);
+
+        uriTestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Log.e("1", "on click... ");
+                playWithUriStr(uriText.getText().toString());
+            }
+        });
+    }
+
+    private void playWithUriStr(String uriStr){
+        plVideoview.stopPlayback();
+//        Log.e("1", "~"+uriStr+"~");
+//        Uri uri = Uri.parse("http://cctvalih5ca.v.myalicdn.com/live/cctv1_2/index.m3u8");
+        Uri uri = Uri.parse(uriStr.replace(" ", ""));
+        plVideoview.setVideoURI(uri);
+        plVideoview.start();
     }
 
     @Override
-    public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-
+    protected void onStop() {
+        super.onStop();
+        plVideoview.stopPlayback();
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-
-    }
-
-    @Override
-    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-
-    }
-
-    @Override
-    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
-    }
 }
