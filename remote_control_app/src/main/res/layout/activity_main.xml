@@ -115,49 +115,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button7" />
 
+
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/channel_up"
         android:layout_width="wrap_content"
         style="@style/button_sytle"
         android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
         android:text="频道+"
-        app:layout_constraintEnd_toStartOf="@+id/button12"
+        app:layout_constraintEnd_toStartOf="@+id/channel_down"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button10" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/channel_down"
         android:layout_width="wrap_content"
         style="@style/button_sytle"
         android:layout_marginEnd="16dp"
         android:text="频道-"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button11"
+        app:layout_constraintBaseline_toBaselineOf="@+id/channel_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button11" />
+        app:layout_constraintStart_toEndOf="@+id/channel_up" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/volume_up"
         style="@style/button_sytle"
         android:layout_width="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="音量+"
-        app:layout_constraintEnd_toStartOf="@+id/button14"
+        app:layout_constraintEnd_toStartOf="@+id/volume_down"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button11" />
+        app:layout_constraintTop_toBottomOf="@+id/channel_up" />
 
     <Button
-        android:id="@+id/button14"
+        android:id="@+id/volume_down"
         android:layout_width="wrap_content"
         style="@style/button_sytle"
         android:layout_marginEnd="16dp"
         android:text="音量-"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button13"
+        app:layout_constraintBaseline_toBaselineOf="@+id/volume_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button13" />
+        app:layout_constraintStart_toEndOf="@+id/volume_up" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

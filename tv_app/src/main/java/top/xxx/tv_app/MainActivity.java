@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.pili.pldroid.player.widget.PLVideoView;
 
@@ -63,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
         // 24           volume+
         // 25           volume-
         // 19,20,21,22  up,down,left,right
+        // up做频道+, down做频道-
+
+        switch (keyCode){
+            case KeyEvent.KEYCODE_DPAD_UP://频道+
+                Toast.makeText(MainActivity.this, "频道+", Toast.LENGTH_SHORT).show();
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN://频道-
+                Toast.makeText(MainActivity.this, "频道-", Toast.LENGTH_SHORT).show();
+                break;
+        }
         return super.onKeyDown(keyCode, event);
     }
 
