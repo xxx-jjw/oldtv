@@ -14,15 +14,31 @@ import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    InetAddress broadcastAddress = null;
+    DatagramSocket socket = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try {
+            broadcastAddress = InetAddress.getByName("255.255.255.255");
+            socket = new DatagramSocket();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         findViewById(R.id.channel_up).setOnClickListener(this);
         findViewById(R.id.channel_down).setOnClickListener(this);
         findViewById(R.id.volume_up).setOnClickListener(this);
         findViewById(R.id.volume_down).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.close();
     }
 
     @Override
@@ -44,13 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendMessageToTv(int keyCode){
-
-        InetAddress broadcastAddress = null;
-        DatagramSocket socket = null;
         try {
-            broadcastAddress = InetAddress.getByName("255.255.255.255");
             int tvPort = 2106;
-            socket = new DatagramSocket();
             byte[] sendData = (keyCode+"").getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcastAddress, tvPort);
             socket.send(sendPacket);
