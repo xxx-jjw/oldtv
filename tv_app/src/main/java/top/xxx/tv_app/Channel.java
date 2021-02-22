@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 import top.xxx.tv_app.util.FileUtil;
 
@@ -21,11 +22,11 @@ public class Channel extends Observable {
 
     private static Channel instance = null;
     private Channel(Context context){
-        this.context = (MainActivity) context;
+        this.context = context;
         initDataFiles();
         initChannel();
         setCurChannelNum(readCurChannelNumByFile());
-        addObserver((MainActivity)context);
+        addObserver((Observer)context);
     }
 
     public static Channel getInstance(Context context){
@@ -39,7 +40,7 @@ public class Channel extends Observable {
         return instance;
     }
 
-    private MainActivity context = null;
+    private Context context = null;
 
     private List<ChannelEntry> channelEntryList = new ArrayList<ChannelEntry>();
     private int curChannelNum = -1;
@@ -93,9 +94,8 @@ public class Channel extends Observable {
             curChannelNum=channelEntryList.size()-1;
         this.curChannelNum = curChannelNum;
         writeCurChannelNumToFile();
-        context.playVideoWithUri(channelEntryList.get(curChannelNum).getUri());
         setChanged();
-        notifyObservers(getCurChannelNum());
+        notifyObservers(channelEntryList.get(curChannelNum));
     }
 
     private void readChannelByFileAndAddChannelToList(){

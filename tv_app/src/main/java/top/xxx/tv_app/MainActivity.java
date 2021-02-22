@@ -106,7 +106,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 //        Toast.makeText(this, ""+(Integer)arg, Toast.LENGTH_SHORT).show();
-        ((TextView)findViewById(R.id.channel_num)).setText(Channel.getInstance(this).getCurChannelNum()+"");
+        Channel.ChannelEntry entry = (Channel.ChannelEntry)arg;
+        ((TextView)findViewById(R.id.channel_num)).setText(""+Channel.getInstance(this).getCurChannelNum());
         ((TextView)findViewById(R.id.channel_name)).setText(Channel.getInstance(this).getCurChannelName());
+        playVideoWithUri(entry.getUri());
     }
 }
