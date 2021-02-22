@@ -1,6 +1,6 @@
 package top.xxx.tv_app.pojo;
 
-public class Channel {
+public class ChannelEntry {
     String name;
     String uri;
 
@@ -20,7 +20,7 @@ public class Channel {
         this.uri = uri;
     }
 
-    public Channel(String name, String uri) {
+    public ChannelEntry(String name, String uri) {
         this.name = name;
         this.uri = uri;
     }

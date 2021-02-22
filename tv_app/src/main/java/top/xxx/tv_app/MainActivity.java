@@ -14,7 +14,6 @@ import com.pili.pldroid.player.widget.PLVideoView;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import top.xxx.tv_app.function.ChannelFunction;
 import top.xxx.tv_app.util.FileUtil;
 import top.xxx.tv_app.util.VirtualKeyUtil;
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         // 设置全屏播放, 不能取消标题栏和状态栏
 //        plVideoview.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);;
 
-        ChannelFunction.initChannel(this);
+        Channel.getInstance(this);
     }
 
     @Override
@@ -67,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         Log.e("onKeyDown", ""+keyCode);
         switch (keyCode){
             case KeyEvent.KEYCODE_DPAD_UP://频道+
-                ChannelFunction.changeChannel(this, true);
+                Channel.getInstance(this).changeChannel(true);
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN://频道-
-                ChannelFunction.changeChannel(this, false);
+                Channel.getInstance(this).changeChannel(false);
                 break;
         }
         return super.onKeyDown(keyCode, event);
