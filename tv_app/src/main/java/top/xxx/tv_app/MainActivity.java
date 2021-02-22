@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         remoteControlServerThread.start();
 
-        FileUtil._sdcard = getExternalFilesDir(null);
+//        FileUtil._sdcard = getExternalFilesDir(null);
 
         Log.e("curNum", FileUtil.getSdcardRootPath());
 

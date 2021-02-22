@@ -16,7 +16,7 @@ import top.xxx.tv_app.MainActivity;
 
 //需要读写外部存储的权限，未写申请权限的代码，需要自己在设置中手动开启存储权限。
 public class FileUtil {
-    public static File _sdcard = null;
+    public static File _sdcard = Environment.getExternalStorageDirectory();
 
     //获取sd卡跟目录，字符串后不带"/"
     public static String getSdcardRootPath(){
