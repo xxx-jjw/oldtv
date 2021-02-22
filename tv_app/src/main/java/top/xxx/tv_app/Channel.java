@@ -9,20 +9,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-import top.xxx.tv_app.pojo.ChannelEntry;
 import top.xxx.tv_app.util.FileUtil;
 
 //单例的
-public class Channel {
+public class Channel extends Observable {
+    private static final String DATA_DIR = "top_xxx_old_tv";
+    private static final String CHANNEL_LIST = "channel.data";
+    private static final String CUR_CHANNEL_NUM = "cur_channel_num.data";
 
     private static Channel instance = null;
-    private Channel(MainActivity context){
-        this.context = context;
+    private Channel(Context context){
+        this.context = (MainActivity) context;
         initDataFiles();
         initChannel();
+        setCurChannelNum(readCurChannelNumByFile());
+        addObserver((MainActivity)context);
     }
-    public static Channel getInstance(MainActivity context){
+
+    public static Channel getInstance(Context context){
         if(null==instance) {
             synchronized (Channel.class) {
                 if (null == instance) {
@@ -35,10 +41,6 @@ public class Channel {
 
     private MainActivity context = null;
 
-    private static final String DATA_DIR = "top_xxx_old_tv";
-    private static final String CHANNEL_LIST = "channel.data";
-    private static final String CUR_CHANNEL_NUM = "cur_channel_num.data";
-
     private List<ChannelEntry> channelEntryList = new ArrayList<ChannelEntry>();
     private int curChannelNum = -1;
 
@@ -50,10 +52,6 @@ public class Channel {
         channelEntryList.add(new ChannelEntry("电影台", "http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8"));
 
         readChannelByFileAndAddChannelToList();
-
-        readCurChannelNumByFile();
-
-        changeChannel(curChannelNum);
     }
 
     private void initDataFiles(){//如果是首次启动应用，就把assets中的文件拷贝到内部存储，因为实际生效使用的文件是内部存储中的文件。
@@ -66,6 +64,38 @@ public class Channel {
 
         if(!FileUtil.hasFilenameInSdcard(DATA_DIR+"/"+CUR_CHANNEL_NUM))
             FileUtil.copyFileFromAssetsToInternalStorage(context,CUR_CHANNEL_NUM, DATA_DIR+"/"+CUR_CHANNEL_NUM);
+    }
+
+    private int readCurChannelNumByFile(){
+        String curChannelNumStr = FileUtil.readOneLineStringFromFile(DATA_DIR+"/"+CUR_CHANNEL_NUM);
+        System.out.println(curChannelNumStr);
+        return Integer.parseInt(curChannelNumStr);
+    }
+
+
+    private void writeCurChannelNumToFile(){
+        FileUtil.writeStringToFile(DATA_DIR+"/"+CUR_CHANNEL_NUM, curChannelNum+"");
+    }
+
+
+    public int getCurChannelNum() {
+        return curChannelNum;
+    }
+
+    public String getCurChannelName(){
+        return channelEntryList.get(curChannelNum).getName();
+    }
+
+    public void setCurChannelNum(int curChannelNum) {
+        if(curChannelNum<0)
+            curChannelNum=0;
+        if(curChannelNum>=channelEntryList.size())
+            curChannelNum=channelEntryList.size()-1;
+        this.curChannelNum = curChannelNum;
+        writeCurChannelNumToFile();
+        context.playVideoWithUri(channelEntryList.get(curChannelNum).getUri());
+        setChanged();
+        notifyObservers(getCurChannelNum());
     }
 
     private void readChannelByFileAndAddChannelToList(){
@@ -87,36 +117,27 @@ public class Channel {
         }
     }
 
-    private void readCurChannelNumByFile(){
-        String curChannelNumStr = FileUtil.readOneLineStringFromFile(DATA_DIR+"/"+CUR_CHANNEL_NUM);
-        System.out.println(curChannelNumStr);
-        curChannelNum = Integer.parseInt(curChannelNumStr);
-    }
 
-    //isAdd为true时频道+，否则频道-
-    public void changeChannel(boolean isAdd){
-        if(isAdd)
-            curChannelNum = (curChannelNum+1)% channelEntryList.size();
-        else
-            curChannelNum = (curChannelNum-1+ channelEntryList.size())% channelEntryList.size();
-        context.playWithUriStr(channelEntryList.get(curChannelNum).getUri());
-        writeCurChannelNumToFile();
-    }
 
-    //更改频道为2参
-    public void changeChannel(int channelNum){
-        if(curChannelNum< channelEntryList.size()&&curChannelNum>=0)
-            context.playWithUriStr(channelEntryList.get(curChannelNum).getUri());
-        else {
-//            playWithUriStr(channelList.get(4).getUri());
-//            paraCurChannelNum = 4;
+    public class ChannelEntry {
+        String name;
+        String uri;
+
+        public String getName() {
+            return name;
         }
-        writeCurChannelNumToFile();
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getUri() {
+            return uri;
+        }
+        public void setUri(String uri) {
+            this.uri = uri;
+        }
+        public ChannelEntry(String name, String uri) {
+            this.name = name;
+            this.uri = uri;
+        }
     }
-
-    private void writeCurChannelNumToFile(){
-        FileUtil.writeStringToFile(DATA_DIR+"/"+CUR_CHANNEL_NUM, curChannelNum+"");
-    }
-
-
 }

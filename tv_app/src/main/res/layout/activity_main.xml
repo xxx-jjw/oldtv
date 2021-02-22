@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/channel_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
@@ -25,6 +26,7 @@
             android:textColor="#33aa00"
             android:text="频道号"></TextView>
         <TextView
+            android:id="@+id/channel_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

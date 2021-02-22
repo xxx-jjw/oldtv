@@ -6,18 +6,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pili.pldroid.player.widget.PLVideoView;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.Observable;
+import java.util.Observer;
 
 import top.xxx.tv_app.util.FileUtil;
 import top.xxx.tv_app.util.VirtualKeyUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private PLVideoView plVideoview;
 
@@ -64,12 +69,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.e("onKeyDown", ""+keyCode);
+        int tempCurChannelNum = Channel.getInstance(this).getCurChannelNum();
         switch (keyCode){
             case KeyEvent.KEYCODE_DPAD_UP://频道+
-                Channel.getInstance(this).changeChannel(true);
+                Channel.getInstance(this).setCurChannelNum(tempCurChannelNum+1);
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN://频道-
-                Channel.getInstance(this).changeChannel(false);
+                Channel.getInstance(this).setCurChannelNum(tempCurChannelNum-1);
                 break;
         }
         return super.onKeyDown(keyCode, event);
@@ -90,12 +96,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void playWithUriStr(String uriStr){
+    public void playVideoWithUri(String uriStr) {
         plVideoview.stopPlayback();
         Uri uri = Uri.parse(uriStr.replace(" ", ""));
         plVideoview.setVideoURI(uri);
         plVideoview.start();
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+//        Toast.makeText(this, ""+(Integer)arg, Toast.LENGTH_SHORT).show();
+        ((TextView)findViewById(R.id.channel_num)).setText(Channel.getInstance(this).getCurChannelNum()+"");
+        ((TextView)findViewById(R.id.channel_name)).setText(Channel.getInstance(this).getCurChannelName());
+    }
 }
