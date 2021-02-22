@@ -4,7 +4,7 @@ import android.app.Instrumentation;
 import android.util.Log;
 import android.view.KeyEvent;
 
-public class KeyUtil {
+public class VirtualKeyUtil {
 
     public static void sendKeyCode(final int keyCode) {
         new Thread() {

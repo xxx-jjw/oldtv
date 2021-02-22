@@ -8,19 +8,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.pili.pldroid.player.widget.PLVideoView;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.ArrayList;
-import java.util.List;
 
-import top.xxx.tv_app.pojo.Channel;
 import top.xxx.tv_app.function.ChannelFunction;
 import top.xxx.tv_app.util.FileUtil;
-import top.xxx.tv_app.util.KeyUtil;
+import top.xxx.tv_app.util.VirtualKeyUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         remoteControlServerThread.start();
+
+        FileUtil._sdcard = getExternalFilesDir(null);
 
         Log.e("curNum", FileUtil.getSdcardRootPath());
 
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             socket.receive(receivePacket);
             int keyCode = Integer.parseInt(new String(receiveData, 0, receivePacket.getLength()));
             Log.e("keyCode", keyCode + "in listen 2106.");
-            KeyUtil.sendKeyCode(keyCode);
+            VirtualKeyUtil.sendKeyCode(keyCode);
         }
     }
 
